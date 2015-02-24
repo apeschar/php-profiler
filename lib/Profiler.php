@@ -69,10 +69,10 @@ class Profiler {
                                                 $this->current->getName()));
 
         $report = "Profiler\n";
-        $report .= str_repeat('-', 79) . "\n";
+        $report .= str_repeat('-', 78) . "\n";
         $report .= $this->getTextReportLines($this->metrics, 0);
-        $report .= str_repeat('-', 79) . "\n";
-        $report .= str_pad('Total:', 70) . sprintf('% 9.3f', $this->getTotalDuration()) . "\n";
+        $report .= str_repeat('-', 78) . "\n";
+        $report .= str_pad('Total:', 69) . sprintf('% 9.3f', $this->getTotalDuration()) . "\n";
 
         return $report;
     }
@@ -81,10 +81,10 @@ class Profiler {
         $prefix = str_repeat('  ', $indent);
         $report = '';
         foreach($metrics as $metric) {
-            $lines = explode("\n", wordwrap($metric->getName(), 70 - strlen($prefix), "\n", true));
+            $lines = explode("\n", wordwrap($metric->getName(), 69 - strlen($prefix), "\n", true));
             foreach($lines as &$line)
                 $line = $prefix . $line;
-            $line = str_pad($line, 70);
+            $line = str_pad($line, 69);
             $line .= sprintf('% 9.3f', $metric->getDuration());
             $report .= implode("\n", $lines) . "\n";
             $report .= $this->getTextReportLines($metric->getChildren(), $indent + 1);
