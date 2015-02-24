@@ -37,6 +37,32 @@ class Profiler {
         $this->current = $this->current->getParent();
     }
 
+    public function wrap($callable) {
+        $args = func_get_args();
+        $args = array_slice($args, 1);
+        $name = $this->describeCallable($callable);
+        $this->start($name);
+        $return = call_user_func_array($callable, $args);
+        $this->stop($name);
+        return $return;
+    }
+
+    private function describeCallable($callable) {
+        if(is_string($callable)) {
+            return $callable;
+        } elseif(is_array($callable)) {
+            $str = '';
+            if(is_object($callable[0]))
+                $str = get_class($callable[0]) . '->';
+            else
+                $str = $callable[0] . '::';
+            $str .= $callable[1];
+            return $str;
+        } else {
+            return 'callable (?)';
+        }
+    }
+
     public function getTextReport() {
         if($this->current)
             throw new ProfilerException(sprintf('Profiler->getTextReport: Metric "%s" is still running.',

@@ -45,6 +45,24 @@ Total:                                                                    4.000
 ', $profiler->getTextReport());
     }
 
+    public function testWrap() {
+        $clock = new ProfilerMockClock;
+        $profiler = new Profiler($clock);
+
+        $return = $profiler->wrap('min', 3, 2, 1);
+        $this->assertEquals(1, $return);
+
+        $profiler->wrap(array($clock, 'tick'), 5);
+
+        $this->assertEquals('Profiler
+-------------------------------------------------------------------------------
+min                                                                       0.000
+ProfilerMockClock->tick                                                   5.000
+-------------------------------------------------------------------------------
+Total:                                                                    5.000
+', $profiler->getTextReport());
+    }
+
     /**
      * @expectedException ProfilerException
      */
